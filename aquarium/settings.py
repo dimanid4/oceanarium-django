@@ -14,7 +14,6 @@ CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 
 INSTALLED_APPS = [
     'cloudinary_storage',
-    'django.contrib.staticfiles',
     'cloudinary',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,10 +26,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
 ]
 
-INSTALLED_APPS += [
-    'cloudinary',
-    'cloudinary_storage',
-]
+
 
 
 MIDDLEWARE = [
