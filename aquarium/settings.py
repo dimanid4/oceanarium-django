@@ -90,9 +90,20 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+    "SECURE": True,
+    "UPLOAD_OPTIONS": {
+        "use_filename": True,     
+        "unique_filename": True, 
+        "overwrite": False,      
+        "invalidate": True,       
+        "resource_type": "image",
+    },
+}
 MEDIA_URL = '/media/'
-
-
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'
