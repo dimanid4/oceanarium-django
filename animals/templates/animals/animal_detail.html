@@ -1,27 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ animal.name }}{% endblock %}
-
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock %}
-
 {% block content %}
-  <article class="animal-detail">
-    <h1 class="page-title">{{ animal.name }}</h1>
+<article class="animal-detail">
+  <h1 class="page-title">{{ animal.name }}</h1>
 
-    <div class="animal-detail__media">
-      {% if animal.image %}
-        <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="animal-detail-image">
-      {% else %}
-        <img src="{% static 'img/placeholder.png' %}" alt="{{ animal.name }}" class="animal-detail-image">
-      {% endif %}
-    </div>
+  <div class="animal-detail__media">
+    {% if animal.image %}
+      <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="animal-detail-image">
+    {% else %}
+      <img src="{% static 'img/placeholder.png' %}" alt="{{ animal.name }}" class="animal-detail-image">
+    {% endif %}
+  </div>
 
+  <div class="animal-info">
     <p><strong>Описание:</strong> {{ animal.description }}</p>
     <p><strong>Среда обитания:</strong> {{ animal.habitat|default:"—" }}</p>
+  </div>
 
-    <a class="btn" href="{% url 'animals:list' %}">← Вернуться к списку</a>
-  </article>
+  <a href="{% url 'animals:list' %}" class="btn">← Вернуться к списку</a>
+</article>
 {% endblock %}
