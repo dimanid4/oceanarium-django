@@ -3,8 +3,18 @@ from .models import Animal
 
 @admin.register(Animal)
 class AnimalAdmin(admin.ModelAdmin):
-    list_display = ('name', 'species', 'is_animal_of_the_day')
-    list_filter = ('is_animal_of_the_day',)
+    list_display = ('name', 'species', 'preview')
+    readonly_fields = ('preview',)
+
+    def preview(self, obj):
+        if getattr(obj, "image", None):
+            try:
+                return format_html('<img src="{}" style="max-height:140px; border-radius:8px"/>', obj.image.url)
+            except Exception:
+                return "—"
+        return "—"
+
+    preview.short_description = "Превью"
 
 from django.contrib import admin
 
