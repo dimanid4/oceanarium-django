@@ -1,23 +1,27 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ animal.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <h1>{{ animal.name }}</h1>
 
-    {% if animal.image %}
+{% block title %}{{ animal.name }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <article class="animal-detail">
+    <h1 class="page-title">{{ animal.name }}</h1>
+
+    <div class="animal-detail__media">
+      {% if animal.image %}
         <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="animal-detail-image">
-    {% else %}
+      {% else %}
         <img src="{% static 'img/placeholder.png' %}" alt="{{ animal.name }}" class="animal-detail-image">
-    {% endif %}
+      {% endif %}
+    </div>
 
     <p><strong>Описание:</strong> {{ animal.description }}</p>
-    <p><strong>Среда обитания:</strong> {{ animal.habitat }}</p>
+    <p><strong>Среда обитания:</strong> {{ animal.habitat|default:"—" }}</p>
 
-    <a href="{% url 'animals:list' %}">← Вернуться к списку</a>
-</body>
-</html>
+    <a class="btn" href="{% url 'animals:list' %}">← Вернуться к списку</a>
+  </article>
+{% endblock %}

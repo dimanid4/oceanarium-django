@@ -1,38 +1,43 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}Морские обитатели{% endblock %}
+
+{# если в base.html есть блок для дополнительных стилей — подключим текущий css #}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1 class="page-title">Морские обитатели</h1>
+  <h1 class="page-title">Морские обитатели</h1>
 
-<div class="animal-list">
+  <div class="animal-list">
     {% for animal in page_obj %}
-        <div class="animal-card" style="opacity: 0; transform: translateY(20px);">
-            <a href="{% url 'animals:detail' animal.pk %}" style="text-decoration: none; color: inherit;">
-                <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
-                <h3>{{ animal.name }}</h3>
-            </a>
-        </div>
+      <div class="animal-card">
+        <a href="{% url 'animals:detail' animal.pk %}" class="animal-link">
+          {% if animal.image %}
+            <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="animal-image">
+          {% else %}
+            <img src="{% static 'img/placeholder.png' %}" alt="{{ animal.name }}" class="animal-image">
+          {% endif %}
+          <h3 class="animal-name">{{ animal.name }}</h3>
+        </a>
+      </div>
     {% empty %}
-        <p>Нет животных для отображения.</p>
+      <p>Пока нет добавленных животных.</p>
     {% endfor %}
-</div>
+  </div>
 
-<div class="pagination">
+  <div class="pagination">
     {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">← Назад</a>
+      <a class="btn" href="?page={{ page_obj.previous_page_number }}">Назад</a>
     {% endif %}
-
-    
-    <a href="{% url 'animals:next_collection' %}" class="btn-next-collection">Следующая коллекция →</a>
-</div>
-
-
-<div class="footer-logo">Oceanarium 2025 ©</div>
- 
-
-
-    
-
-
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a class="btn" href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+    {% endif %}
+  </div>
 {% endblock %}
+
 
 
