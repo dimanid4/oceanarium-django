@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 import dj_database_url
+import cloudinary
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -117,4 +119,15 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
+_CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+
+if _CLOUDINARY_URL:
+    cloudinary.config(cloudinary_url=_CLOUDINARY_URL, secure=True)
+else:
+    # Попытка №2: три переменные
+    cloudinary.config(
+        cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+        api_key=os.environ.get("CLOUDINARY_API_KEY"),
+        api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+        secure=True,
+    )
