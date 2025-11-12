@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: oceanarium-django
+    env: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn aquarium.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "0"
+    postDeployCommand: python manage.py migrate
