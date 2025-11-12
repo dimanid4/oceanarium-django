@@ -1,0 +1,139 @@
+
+html, body {
+    background-color: #eef9fd !important;
+    color: #1e2b33 !important;
+    font-family: "Inter", "Segoe UI", sans-serif !important;
+}
+
+
+#header {
+    background: linear-gradient(90deg, #00b8d9, #00d4a4) !important;
+    color: white !important;
+    border-bottom: 2px solid #0099cc !important;
+}
+
+#header a {
+    color: #ffffff !important;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+#header a:hover {
+    color: #003b46 !important;
+}
+
+
+#branding h1 a {
+    font-size: 22px;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+}
+
+
+.module,
+.dashboard .module {
+    background: #ffffff !important;
+    border-radius: 10px !important;
+    border: 1px solid #d4f0f7 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    padding: 10px !important;
+    transition: transform 0.2s ease;
+}
+
+.module:hover {
+    transform: translateY(-3px);
+}
+
+
+.module caption,
+.dashboard h2 {
+    color: #0099cc !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    border-bottom: 2px solid #b2ebf2;
+    padding-bottom: 5px;
+}
+
+
+#content-main table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#content-main th {
+    background: #e0f7fa !important;
+    color: #004655 !important;
+    font-weight: 600;
+    border: 1px solid #b2ebf2 !important;
+}
+
+#content-main td {
+    border: 1px solid #d6f0f5 !important;
+    background: #ffffff !important;
+    color: #1e2b33 !important;
+}
+
+
+a, a:visited {
+    color: #007b9e !important;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #004655 !important;
+    text-decoration: underline;
+}
+
+
+.button, input[type=submit], input[type=button], .addlink, .changelink, .deletelink {
+    background: linear-gradient(90deg, #00b8d9, #00d4a4) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+    transition: all 0.3s ease;
+}
+
+html,
+body,
+#container {
+    background-color: #eef9fd !important;
+}
+
+
+html[data-theme="dark"],
+html[data-theme="dark"] body,
+html[data-theme="dark"] #container {
+    background-color: #eef9fd !important;
+    color: #1e2b33 !important;
+}
+
+
+
+#content-related .module,
+.dashboard #content-related .module {
+    margin-bottom: 0 !important;
+    background-color: #ffffff !important;
+    border-radius: 10px !important;
+    border: 1px solid #d4f0f7 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transform: none !important;
+}
+
+
+#content-related .module:hover,
+.dashboard #content-related .module:hover {
+    transform: none !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+
+#content-related .module::before,
+#content-related .module::after,
+.dashboard #content-related .module::before,
+.dashboard #content-related .module::after {
+    content: none !important;
+}
+

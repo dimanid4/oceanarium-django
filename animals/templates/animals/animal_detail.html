@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="animal-detail-container">
+    <h1>{{ animal.name }}</h1>
+    <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="animal-detail-image">
+    <div class="animal-info">
+        <p><strong>Вид:</strong> {{ animal.species }}</p>
+        <p><strong>Описание:</strong> {{ animal.description }}</p>
+    </div>
+    <a href="{% url 'animals:list' %}" class="btn-primary" style="display: inline-block; width: auto; text-decoration: none; text-align: center;">
+        ← К списку обитателей
+    </a>
+</div>
+{% endblock %}

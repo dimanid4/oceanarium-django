@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-glass">
+    <h1>🎫 Забронировать экскурсию</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {# 1. Общие ошибки формы (если вдруг будут) #}
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {# 2. Поля формы с их ошибками #}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+
+                {# выводим ошибки именно для этого поля #}
+                {% if field.errors %}
+                    <div class="field-error">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn-primary">✅ Подтвердить бронирование</button>
+    </form>
+
+    <p style="font-size: 13px; color: #aaa; margin-top: 25px; text-align: center; line-height: 1.7;">
+        🌊Спасибо, что выбрали <span style="color:#00bfff; font-weight: 600;">Oceanarium 2025</span>!<br>
+        Оплатить экскурсию можно у контролёра перед входом.<br>
+        Стоимость билета — <b>1999₽</b>.<br>
+        Мы рады подарить вам встречу с удивительным подводным миром 💙
+    </p>
+</div>
+{% endblock %}
+
+

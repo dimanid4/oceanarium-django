@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="page-title">Морские обитатели</h1>
+
+<div class="animal-list">
+    {% for animal in page_obj %}
+        <div class="animal-card" style="opacity: 0; transform: translateY(20px);">
+            <a href="{% url 'animals:detail' animal.pk %}" style="text-decoration: none; color: inherit;">
+                <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
+                <h3>{{ animal.name }}</h3>
+            </a>
+        </div>
+    {% empty %}
+        <p>Нет животных для отображения.</p>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">← Назад</a>
+    {% endif %}
+
+    
+    <a href="{% url 'animals:next_collection' %}" class="btn-next-collection">Следующая коллекция →</a>
+</div>
+
+
+<div class="footer-logo">Oceanarium 2025 ©</div>
+ 
+
+
+    
+
+
+{% endblock %}
+
+

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceanarium Premium | Исследуйте глубины</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    
+    <header>
+        <div class="logo">🌊 Oceanarium</div>
+        <nav>
+            <a href="{% url 'animals:list' %}">🐠 Морские обитатели</a>
+            <a href="{% url 'bookings:book_tour' %}">🎫 Экскурсии</a>
+            
+            <a href="{% url 'about' %}">🌊О нас</a>
+                {% if user.is_authenticated %}
+                 <a href="{% url 'users:profile' %}">👤Профиль</a> 
+                <span>👋 Добро пожаловать, {{ user.username }}</span>
+            
+                <a href="{% url 'users:logout' %}">🚪 Выйти</a>
+            
+            {% else %}
+                <a href="{% url 'users:login' %}">🔑 Войти</a>
+                <a href="{% url 'users:register' %}">📝 Регистрация</a>
+            {% endif %}
+            <button
+            type="button"
+            id="accessibility-toggle"
+            class="accessibility-toggle"
+            aria-pressed="false"
+            title="Режим повышенной доступности (контраст + крупный шрифт)"
+        >
+            ♿ A+
+        </button>
+        </nav>
+        
+    </header>
+
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+    // Хвост курсора
+    const trailContainer = document.createElement('div');
+    trailContainer.className = 'cursor-trail';
+    document.body.appendChild(trailContainer);
+
+    let mouseX = 0, mouseY = 0;
+    let trail = [];
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        createTrailParticle(mouseX, mouseY);
+    });
+
+    function createTrailParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: rgba(100, 242, 216, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            left: ${x}px;
+            top: ${y}px;
+            transition: all 0.3s ease;
+        `;
+        
+        trailContainer.appendChild(particle);
+        trail.push(particle);
+
+        setTimeout(() => {
+            particle.style.opacity = '0';
+            particle.style.transform = 'scale(0)';
+        }, 50);
+
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+            trail = trail.filter(p => p !== particle);
+        }, 300);
+    }
+
+    document.addEventListener('mouseleave', () => {
+        trail.forEach(particle => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        });
+        trail = [];
+    });
+
+function applyAccessibilityMode(on) {
+        const body = document.body;
+        const header = document.querySelector('header');
+        const navLinks = document.querySelectorAll('header nav a');
+        const accBtn = document.getElementById('accessibility-toggle');
+        const blocks = document.querySelectorAll('.form-glass, .animal-card, .success-glass');
+        const animalTitles = document.querySelectorAll('.animal-card h3');
+        const mainHeadings = document.querySelectorAll('main h1, main h2, main h3');
+        const mainLabels = document.querySelectorAll('main label');
+        const mainStrong = document.querySelectorAll('main strong');
+        const mainAll = document.querySelectorAll('main *');
+
+    
+        const gradientTitles = document.querySelectorAll('.page-title, .form-glass h1');
+        const priceEls = [];
+    mainAll.forEach(el => {
+        if (el.textContent && el.textContent.includes('₽')) {
+            priceEls.push(el);
+        }
+    });
+
+        if (on) {
+           
+            body.style.background = '#ffffff';
+            body.style.color = '#000000';
+            body.style.fontSize = '1.05em';
+            body.style.lineHeight = '1.8';
+
+       
+            if (header) {
+                header.style.background = '#000000';
+                header.style.borderBottom = '2px solid #ffffff';
+            }
+
+           
+            navLinks.forEach(a => {
+                a.style.color = '#000000';
+                a.style.backgroundColor = '#ffff00';
+                a.style.fontWeight = '700';
+                a.style.textDecoration = 'underline';
+            });
+
+          
+            blocks.forEach(el => {
+                el.style.background = '#f9f9f9';
+                el.style.color = '#000000';
+                el.style.border = '2px solid #000000';
+                el.style.boxShadow = 'none';
+            });
+
+          
+            animalTitles.forEach(h3 => {
+                h3.style.color = '#000000';
+                h3.style.fontWeight = '700';
+            });
+
+        
+            mainHeadings.forEach(h => {
+                h.style.color = '#000000';
+                h.style.fontWeight = '700';
+            });
+
+            
+            mainLabels.forEach(label => {
+                label.style.color = '#000000';
+                label.style.fontWeight = '600';
+            });
+
+            
+            mainStrong.forEach(el => {
+                el.style.color = '#000000';
+                el.style.fontWeight = '700';
+            });
+
+           
+            gradientTitles.forEach(el => {
+    el.style.background = 'none';
+    el.style.backgroundImage = 'none';
+    el.style.backgroundClip = 'initial';
+
+    
+    el.style.WebkitBackgroundClip = 'initial';
+    el.style.WebkitTextFillColor = '#000000';
+
+    el.style.color = '#000000';
+    el.style.fontWeight = '700';
+});
+            mainAll.forEach(el => {
+                
+                if (el.classList.contains('btn-primary') || el.classList.contains('btn-secondary')) {
+                    return;
+                }
+                el.style.color = '#000000';
+            });
+
+            priceEls.forEach(el => {
+            el.style.background = 'none';
+            el.style.backgroundImage = 'none';
+            el.style.backgroundClip = 'initial';
+            el.style.WebkitBackgroundClip = 'initial';
+            el.style.WebkitTextFillColor = '#000000';  
+            el.style.color = '#000000';
+            el.style.fontWeight = '700';
+        });
+           
+            if (accBtn) {
+                accBtn.style.background = 'linear-gradient(135deg, #2d87c8, #36b5b0)';
+                accBtn.style.color = '#ffffff';
+                accBtn.style.border = '1px solid rgba(100, 242, 216, 0.9)';
+                accBtn.style.borderRadius = '999px';
+                accBtn.style.padding = '0.4rem 0.9rem';
+                accBtn.style.fontSize = '0.9rem';
+                accBtn.style.fontWeight = '600';
+                accBtn.style.boxShadow = '0 0 12px rgba(45, 135, 200, 0.6)';
+            }
+        } else {
+            
+            body.style.background = '';
+            body.style.color = '';
+            body.style.fontSize = '';
+            body.style.lineHeight = '';
+
+            if (header) {
+                header.style.background = '';
+                header.style.borderBottom = '';
+            }
+
+            navLinks.forEach(a => {
+                a.style.color = '';
+                a.style.backgroundColor = '';
+                a.style.fontWeight = '';
+                a.style.textDecoration = '';
+            });
+
+            blocks.forEach(el => {
+                el.style.background = '';
+                el.style.color = '';
+                el.style.border = '';
+                el.style.boxShadow = '';
+            });
+
+            animalTitles.forEach(h3 => {
+                h3.style.color = '';
+                h3.style.fontWeight = '';
+            });
+
+            mainHeadings.forEach(h => {
+                h.style.color = '';
+                h.style.fontWeight = '';
+            });
+
+            mainLabels.forEach(label => {
+                label.style.color = '';
+                label.style.fontWeight = '';
+            });
+
+            mainStrong.forEach(el => {
+                el.style.color = '';
+                el.style.fontWeight = '';
+            });
+
+            
+gradientTitles.forEach(el => {
+    el.style.background = '';
+    el.style.backgroundImage = '';
+    el.style.backgroundClip = '';
+    el.style.WebkitBackgroundClip = '';
+    el.style.WebkitTextFillColor = '';
+    el.style.color = '';
+    el.style.fontWeight = '';
+});
+
+            mainAll.forEach(el => {
+                el.style.color = '';
+            });
+            
+            priceEls.forEach(el => {
+            el.style.background = '';
+            el.style.backgroundImage = '';
+            el.style.backgroundClip = '';
+            el.style.WebkitBackgroundClip = '';
+            el.style.WebkitTextFillColor = '';
+            el.style.color = '';
+            el.style.fontWeight = '';
+        });
+
+            if (accBtn) {
+                accBtn.style.background = 'transparent';
+                accBtn.style.color = '#64f2d8';
+                accBtn.style.border = '1px solid #64f2d8';
+                accBtn.style.borderRadius = '999px';
+                accBtn.style.padding = '0.4rem 0.9rem';
+                accBtn.style.fontSize = '0.9rem';
+                accBtn.style.fontWeight = '600';
+                accBtn.style.boxShadow = 'none';
+            }
+        }
+    }
+
+
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        const cards = document.querySelectorAll(".animal-card");
+        cards.forEach((card, i) => {
+            setTimeout(() => {
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            }, i * 100);
+        });
+
+        
+        const toggleBtn = document.getElementById("accessibility-toggle");
+        if (!toggleBtn) return;
+
+        
+        let isOn = localStorage.getItem("accessibility") === "on";
+        applyAccessibilityMode(isOn);
+        toggleBtn.setAttribute("aria-pressed", isOn ? "true" : "false");
+
+        toggleBtn.addEventListener("click", () => {
+            isOn = !isOn;
+            applyAccessibilityMode(isOn);
+            toggleBtn.setAttribute("aria-pressed", isOn ? "true" : "false");
+            localStorage.setItem("accessibility", isOn ? "on" : "off");
+        });
+    });
+</script>
+</body>
+</html>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="success-glass">
+    <h1>✅ Бронирование подтверждено</h1>
+    <p>Благодарим вас, <strong>{{ booking.user.username }}</strong>! Ваша экскурсия запланирована на <strong>{{ booking.date }}</strong> в <strong>{{ booking.time }}</strong> для <strong>{{ booking.number_of_people }}</strong> человек.</p>
+    <a href="{% url 'animals:list' %}" class="btn-secondary">Вернуться к обитателям</a>
+</div>
+{% endblock %}

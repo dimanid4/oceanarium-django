@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="profile-wrapper">
+    <h1 class="profile-title">👤 Профиль пользователя</h1>
+
+    <div class="avatar-section">
+        <div class="avatar-container">
+            <img src="{{ request.user.profile.avatar.url }}" alt="Avatar" class="avatar-image" id="avatar-img">
+            <div class="avatar-hover">
+                <span>📷</span>
+            </div>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" class="avatar-form">
+            {% csrf_token %}
+            <div class="file-input-wrapper">
+                {{ form.avatar }}
+                <label for="id_avatar" class="file-input-label">
+                    <span class="file-icon">📁</span>
+                    Выбрать новый аватар
+                </label>
+            </div>
+            <button type="submit" class="update-btn">🔄 Обновить аватар</button>
+        </form>
+    </div>
+
+    <div class="bookings-section">
+        <h2 class="bookings-title">🎫 Мои бронирования</h2>
+        
+        <div class="bookings-container">
+            {% for booking in bookings %}
+            <div class="booking-card" style="animation-delay: {{ forloop.counter0|add:0.1 }}s">
+                <div class="booking-header">
+                    <span class="booking-date">📅 {{ booking.date }}</span>
+                    <span class="booking-status {% if booking.is_past %}past{% else %}upcoming{% endif %}">
+                        {% if booking.is_past %}Завершено{% else %}Активно{% endif %}
+                    </span>
+                </div>
+                <div class="booking-details">
+                    <span class="booking-time">⏰ {{ booking.time }}</span>
+                    <span class="booking-people">👥 {{ booking.number_of_people }} чел.</span>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-bookings">
+                <div class="empty-icon">🎯</div>
+                <p>У вас ещё нет бронирований</p>
+                <a href="{% url 'bookings:book_tour' %}" class="book-now-btn">Забронировать экскурсию</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.profile-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #64f2d8, #36b5b0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+
+.avatar-section {
+    background: rgba(16, 42, 67, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(45, 135, 200, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.avatar-section:hover {
+    transform: translateY(-5px);
+}
+
+.avatar-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #36b5b0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.avatar-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 1.5rem;
+}
+
+.avatar-container:hover .avatar-hover {
+    opacity: 1;
+}
+
+.avatar-container:hover .avatar-image {
+    transform: scale(1.1);
+}
+
+
+.avatar-form {
+    margin-top: 1rem;
+}
+
+.file-input-wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.file-input-wrapper input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-input-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: rgba(45, 135, 200, 0.2);
+    border: 1px dashed #2d87c8;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.file-input-label:hover {
+    background: rgba(45, 135, 200, 0.3);
+    transform: translateY(-2px);
+}
+
+.file-icon {
+    font-size: 1.2rem;
+}
+
+.update-btn {
+    background: linear-gradient(135deg, #2d87c8, #36b5b0);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+}
+
+.update-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(45, 135, 200, 0.4);
+}
+
+
+.bookings-section {
+    background: rgba(16, 42, 67, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(45, 135, 200, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.bookings-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #64f2d8;
+}
+
+.bookings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.booking-card {
+    background: rgba(16, 42, 67, 0.8);
+    border: 1px solid rgba(45, 135, 200, 0.2);
+    border-radius: 12px;
+    padding: 1.2rem;
+    transition: all 0.3s ease;
+    animation: slideInRight 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.booking-card:hover {
+    transform: translateX(0) translateY(-3px);
+    box-shadow: 0 5px 15px rgba(45, 135, 200, 0.3);
+    border-color: #36b5b0;
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.booking-date {
+    font-weight: 600;
+    color: #64f2d8;
+    font-size: 1.1rem;
+}
+
+.booking-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.booking-status.upcoming {
+    background: rgba(72, 187, 120, 0.2);
+    color: #48bb78;
+}
+
+.booking-status.past {
+    background: rgba(156, 163, 175, 0.2);
+    color: #9ca3af;
+}
+
+.booking-details {
+    display: flex;
+    gap: 1.5rem;
+    color: #b3d4fc;
+}
+
+.booking-time,
+.booking-people {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+
+.no-bookings {
+    text-align: center;
+    padding: 2rem;
+    color: #b3d4fc;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+}
+
+.no-bookings p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.book-now-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #2d87c8, #36b5b0);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.book-now-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(45, 135, 200, 0.4);
+}
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+
+@media (max-width: 768px) {
+    .profile-wrapper {
+        padding: 1rem;
+    }
+    
+    .profile-title {
+        font-size: 2rem;
+    }
+    
+    .avatar-section,
+    .bookings-section {
+        padding: 1.5rem;
+    }
+    
+    .booking-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+    
+    .booking-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .avatar-container {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .profile-title {
+        font-size: 1.8rem;
+    }
+}
+</style>
+
+<script>
+
+document.getElementById('id_avatar').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('avatar-img').src = e.target.result;
+            
+            
+            const avatar = document.getElementById('avatar-img');
+            avatar.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                avatar.style.transform = 'scale(1)';
+            }, 300);
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.booking-card');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+</script>
+{% endblock %}
