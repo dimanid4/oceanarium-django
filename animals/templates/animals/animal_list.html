@@ -1,35 +1,38 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block content %}
 <h1 class="page-title">Морские обитатели</h1>
 
 <div class="animal-list">
   {% for animal in page_obj %}
-    <div class="animal-card">
-      <a href="{% url 'animals:detail' animal.pk %}">
+    <div class="animal-card" style="opacity: 0; transform: translateY(20px);">
+      <a href="{% url 'animals:detail' animal.pk %}" style="text-decoration: none; color: inherit;">
         {% if animal.image %}
-          <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="animal-image">
+          <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
         {% else %}
-          <img src="{% static 'img/placeholder.png' %}" alt="{{ animal.name }}" class="animal-image">
+          <img src="https://res.cloudinary.com/image/upload/v1/placeholder.png" alt="no image">
         {% endif %}
         <h3>{{ animal.name }}</h3>
       </a>
     </div>
   {% empty %}
-    <p>Пока нет добавленных животных.</p>
+    <p>Нет животных для отображения.</p>
   {% endfor %}
 </div>
 
 <div class="pagination">
   {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}" class="btn">← Назад</a>
+    <a href="?page={{ page_obj.previous_page_number }}">← Назад</a>
   {% endif %}
-  <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+  <a href="{% url 'animals:next_collection' %}" class="btn-next-collection">Следующая коллекция →</a>
+
   {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}" class="btn">Вперёд →</a>
+    <a href="?page={{ page_obj.next_page_number }}">Вперёд →</a>
   {% endif %}
 </div>
+
+<div class="footer-logo">Oceanarium 2025 ©</div>
 {% endblock %}
 
 

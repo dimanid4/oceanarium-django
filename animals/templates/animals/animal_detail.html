@@ -1,23 +1,20 @@
 {% extends "base.html" %}
-{% load static %}
-
 {% block content %}
-<article class="animal-detail">
-  <h1 class="page-title">{{ animal.name }}</h1>
+<h1>{{ animal.name }}</h1>
 
-  <div class="animal-detail__media">
-    {% if animal.image %}
-      <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="animal-detail-image">
-    {% else %}
-      <img src="{% static 'img/placeholder.png' %}" alt="{{ animal.name }}" class="animal-detail-image">
-    {% endif %}
-  </div>
+{% if animal.image %}
+  <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
+{% else %}
+  <img src="https://res.cloudinary.com/image/upload/v1/placeholder.png" alt="no image">
+{% endif %}
 
-  <div class="animal-info">
-    <p><strong>Описание:</strong> {{ animal.description }}</p>
-    <p><strong>Среда обитания:</strong> {{ animal.habitat|default:"—" }}</p>
-  </div>
+<p><strong>Описание:</strong> {{ animal.description }}</p>
 
-  <a href="{% url 'animals:list' %}" class="btn">← Вернуться к списку</a>
-</article>
+{% if animal.habitat %}
+  <p><strong>Среда обитания:</strong> {{ animal.habitat }}</p>
+{% else %}
+  <p><strong>Среда обитания:</strong> -</p>
+{% endif %}
+
+<p><a href="{% url 'animals:list' %}">← Вернуться к списку</a></p>
 {% endblock %}
